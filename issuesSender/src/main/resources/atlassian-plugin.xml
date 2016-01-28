@@ -13,7 +13,8 @@
     <!-- add our web resources -->
     <web-resource key="issuesSender-resources" name="issuesSender Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
+
+        <resource type="download" name="admin.js" location="js/admin.js"/>
         <resource type="download" name="issuesSender.css" location="/css/issuesSender.css"/>
         <resource type="download" name="issuesSender.js" location="/js/issuesSender.js"/>
         <resource type="download" name="images/" location="/images"/>

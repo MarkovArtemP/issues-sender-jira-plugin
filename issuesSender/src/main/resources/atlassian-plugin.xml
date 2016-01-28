@@ -10,7 +10,6 @@
 
     <!-- add our i18n resource -->
     <resource type="i18n" name="i18n" location="issuesSender"/>
-    
     <!-- add our web resources -->
     <web-resource key="issuesSender-resources" name="issuesSender Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>

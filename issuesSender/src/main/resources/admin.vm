@@ -17,7 +17,7 @@
               </ul>
               <div class="tabs-pane  active-pane" id="tab-A">
                   <h2>Tasks table</h2>
-                  <p>For help to create cron-string go to "Crontab Form" tab</p>
+                  <p>For help to create cron-string go to "Crontab Form".</p>
                   <table id="issues-tasks-table" class="aui"></table>
               </div>
               <div class="tabs-pane" id="tab-B">

@@ -6,17 +6,7 @@
   </head>
   <body>
     <form id="admin" class="aui">
-      <div class="field-group">
-        <label for="email">$i18n.getText("issuesSender.admin.email.label")</label>
-        <input type="email" id="email" name="email" class="email">
-      </div>
-      <div class="field-group">
-        <label for="time">$i18n.getText("issuesSender.admin.time.label")</label>
-        <input type="text" id="time" name="time" class="text">
-      </div>
-      <div class="field-group">
-        <input type="submit" value="$i18n.getText("issuesSender.admin.save.label")" class="button">
-      </div>
+      <table id="issues-tasks-table" class="aui"></table>
     </form>
   </body>
 </html>

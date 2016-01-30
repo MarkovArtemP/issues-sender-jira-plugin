@@ -7,8 +7,8 @@ public class Mapper {
     public static XmlTask toXmlTask(TaskEntity entity) {
         XmlTask task = new XmlTask();
         task.id = entity.getID();
-        task.email = entity.getEmail().getAddress();
-        task.cron = entity.getCron().asString();
+        task.email = entity.getEmail();
+        task.cron = entity.getCron();
         return task;
     }
 }

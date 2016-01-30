@@ -1,10 +1,7 @@
 package com.izpa.jira.plugins.issuesSender.rest;
 
-import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
-import com.cronutils.model.Cron;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.parser.CronParser;
 import com.cronutils.validator.CronValidator;
 import com.izpa.jira.plugins.issuesSender.dao.DAOFactory;
 import com.izpa.jira.plugins.issuesSender.entity.TaskEntity;
@@ -73,9 +70,7 @@ public class issuesSenderREST {
             return Response.status(403).type("text/plain")
                     .entity("Invalid cron-string").build();
         }
-        CronParser parser = new CronParser(cronDefinition);
-        Cron quartzCron = parser.parse(xmlTask.cron);
-        Task task = new TaskImpl(email, quartzCron);
+        Task task = new TaskImpl(xmlTask.email, xmlTask.cron);
         TaskEntity taskEntity = DAOFactory.getInstance().getTaskDAO().addTask(task);
         return Response.ok(Mapper.toXmlTask(taskEntity)).cacheControl(CacheControl.NO_CACHE).build();
     }
@@ -104,9 +99,7 @@ public class issuesSenderREST {
             return Response.status(403).type("text/plain")
                     .entity("Invalid cron-string").build();
         }
-        CronParser parser = new CronParser(cronDefinition);
-        Cron quartzCron = parser.parse(xmlTask.cron);
-        Task task = new TaskImpl(email, quartzCron);
+        Task task = new TaskImpl(xmlTask.email, xmlTask.cron);
         TaskEntity taskEntity = DAOFactory.getInstance().getTaskDAO().updateTask(id, task);
         return Response.ok(Mapper.toXmlTask(taskEntity)).cacheControl(CacheControl.NO_CACHE).build();
     }

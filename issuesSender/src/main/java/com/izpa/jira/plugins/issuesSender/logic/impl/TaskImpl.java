@@ -1,32 +1,29 @@
 package com.izpa.jira.plugins.issuesSender.logic.impl;
 
-import com.cronutils.model.Cron;
 import com.izpa.jira.plugins.issuesSender.logic.Task;
 
-import javax.mail.internet.InternetAddress;
-
 public class TaskImpl implements Task {
-    private InternetAddress email;
-    private Cron cron;
+    private String email;
+    private String cron;
 
-    public TaskImpl (InternetAddress email, Cron cron){
+    public TaskImpl (String email, String cron){
         this.setEmail(email);
         this.setCron(cron);
     }
 
-    public InternetAddress getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(InternetAddress email) {
+    public void setEmail(String email) {
         this.email=email;
     }
 
-    public Cron getCron() {
+    public String getCron() {
         return cron;
     }
 
-    public void setCron(Cron cron) {
+    public void setCron(String cron) {
         this.cron = cron;
     }
 }

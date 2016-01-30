@@ -14,6 +14,7 @@
   <!-- add our web resources -->
   <web-resource key="issuesSender-resources" name="issuesSender Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <dependency>com.atlassian.auiplugin:aui-experimental-restfultable</dependency>
     <resource type="download" name="admin.js" location="/js/admin.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>issuesSender</context>

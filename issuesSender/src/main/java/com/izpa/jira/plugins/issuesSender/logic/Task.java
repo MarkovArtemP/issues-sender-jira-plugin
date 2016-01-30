@@ -1,14 +1,9 @@
 package com.izpa.jira.plugins.issuesSender.logic;
 
-
-import com.cronutils.model.Cron;
-import javax.mail.internet.InternetAddress;
-
 public interface Task {
-    public InternetAddress getEmail();
-    public void setEmail(InternetAddress email);
+    public String getEmail();
+    public void setEmail(String email);
 
-    public Cron getCron();
-    public void setCron(Cron cron);
-
+    public String getCron();
+    public void setCron(String cron);
 }

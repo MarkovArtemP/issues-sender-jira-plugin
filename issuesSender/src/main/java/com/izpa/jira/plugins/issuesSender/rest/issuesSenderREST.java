@@ -24,7 +24,6 @@ import java.util.List;
 @Produces ({ MediaType.APPLICATION_JSON })
 public class issuesSenderREST {
     private CronDefinition cronDefinition = CronDefinitionBuilder.defineCron()
-                    .withSeconds().and()
                     .withMinutes().and()
                     .withHours().and()
                     .withDayOfMonth()
@@ -33,8 +32,6 @@ public class issuesSenderREST {
                     .withDayOfWeek()
                     .withIntMapping(7, 0)
                     .supportsHash().supportsL().supportsW().and()
-                    .withYear().and()
-                    .lastFieldOptional()
                     .instance();
     private CronValidator quartzValidator = new CronValidator(cronDefinition);
 
@@ -87,9 +84,8 @@ public class issuesSenderREST {
     @Path("{id}")
     public Response updateTask(@PathParam("id") final String idStr, final XmlTask xmlTask) throws Exception {
         long id = Long.parseLong(idStr);
-        InternetAddress email;
         try {
-            email = new InternetAddress(xmlTask.email);
+            InternetAddress email = new InternetAddress(xmlTask.email);
         }
         catch (AddressException e){
             return Response.status(403).type("text/plain")

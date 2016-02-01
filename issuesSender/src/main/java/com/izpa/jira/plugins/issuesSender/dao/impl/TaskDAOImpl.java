@@ -63,21 +63,7 @@ public class TaskDAOImpl implements TaskDAO {
         }
     });
   }
-/*
-  public TaskEntity updateTask(final long id, final Task task) throws Exception {
-    return ao.executeInTransaction(new TransactionCallback<TaskEntity>() {
-      public TaskEntity doInTransaction() {
-        TaskEntity entity = ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
-        if ((task.getEmail() != null)&&(task.getCron() != null)) {
-          entity.setEmail(task.getEmail());
-          entity.setCron(task.getCron());
-        }
-        entity.save();
-        return entity;
-      }
-    });
-  }
-  */
+
 public TaskEntity sendMail(final long id) throws Exception {
   return ao.executeInTransaction(new TransactionCallback<TaskEntity>() {
     public TaskEntity doInTransaction() {

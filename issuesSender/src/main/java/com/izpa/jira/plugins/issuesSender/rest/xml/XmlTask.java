@@ -5,11 +5,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class XmlTask {
-    public XmlTask(){}
-    @XmlElement
-    public long id;
-    @XmlElement
-    public String email;
-    @XmlElement
-    public String cron;
+  public XmlTask(){}
+  @XmlElement
+  public long id;
+  @XmlElement
+  public String email;
+  @XmlElement
+  public String cron;
 }

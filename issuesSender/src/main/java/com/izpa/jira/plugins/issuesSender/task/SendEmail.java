@@ -8,8 +8,6 @@ import java.util.Map;
 public class SendEmail implements  PluginJob{
 
   public void execute(Map<String, Object> map) {
-    //TODO Delete this
-    System.out.println("============================================In task!===================================");
     try {
       DAOFactory.getInstance().getTaskDAO().sendMail((Long) map.get("id"));
     } catch (Exception e) {

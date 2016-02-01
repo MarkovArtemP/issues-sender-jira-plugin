@@ -12,39 +12,38 @@ import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.templaterenderer.TemplateRenderer;
 
 public class AdminServlet extends HttpServlet {
-    private final UserManager userManager;
-    private final LoginUriProvider loginUriProvider;
+  private final UserManager userManager;
+  private final LoginUriProvider loginUriProvider;
 
-    private final TemplateRenderer renderer;
+  private final TemplateRenderer renderer;
 
-    public AdminServlet(UserManager userManager, LoginUriProvider loginUriProvider, TemplateRenderer renderer) {
-        this.userManager = userManager;
-        this.loginUriProvider = loginUriProvider;
-        this.renderer = renderer;
+  public AdminServlet(UserManager userManager, LoginUriProvider loginUriProvider, TemplateRenderer renderer) {
+    this.userManager = userManager;
+    this.loginUriProvider = loginUriProvider;
+    this.renderer = renderer;
+  }
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String username = userManager.getRemoteUsername(request);
+    if (username == null || !userManager.isSystemAdmin(username)) {
+      redirectToLogin(request, response);
+      return;
     }
+    response.setContentType("text/html;charset=utf-8");
+    renderer.render("admin.vm", response.getWriter());
+  }
 
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String username = userManager.getRemoteUsername(request);
-        if (username == null || !userManager.isSystemAdmin(username)) {
-            redirectToLogin(request, response);
-            return;
-        }
+  private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.sendRedirect(loginUriProvider.getLoginUri(getUri(request)).toASCIIString());
+  }
 
-        response.setContentType("text/html;charset=utf-8");
-        renderer.render("admin.vm", response.getWriter());
+  private URI getUri(HttpServletRequest request) {
+    StringBuffer builder = request.getRequestURL();
+    if (request.getQueryString() != null) {
+      builder.append("?");
+      builder.append(request.getQueryString());
     }
-
-    private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect(loginUriProvider.getLoginUri(getUri(request)).toASCIIString());
-    }
-
-    private URI getUri(HttpServletRequest request) {
-        StringBuffer builder = request.getRequestURL();
-        if (request.getQueryString() != null) {
-            builder.append("?");
-            builder.append(request.getQueryString());
-        }
-        return URI.create(builder.toString());
-    }
+    return URI.create(builder.toString());
+  }
 }

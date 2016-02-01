@@ -21,6 +21,7 @@ import java.util.List;
 @Path("tasks")
 @Consumes ({ MediaType.APPLICATION_JSON })
 @Produces ({ MediaType.APPLICATION_JSON })
+//TODO добавить логирование
 public class issuesSenderREST {
   @GET
   public Response getTasks() throws Exception {
@@ -42,8 +43,8 @@ public class issuesSenderREST {
 
   @POST
   public Response addTask(final XmlTask xmlTask) throws Exception {
-    InternetAddress email;
     try {
+      InternetAddress email;
       email = new InternetAddress(xmlTask.email);
     }
     catch (AddressException e){

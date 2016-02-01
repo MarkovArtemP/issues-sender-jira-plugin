@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class EmailSenderImpl implements LifecycleAware, EmailSender {
+  //TODO добавить логирование
   private final PluginScheduler pluginScheduler;
 
   public EmailSenderImpl(PluginScheduler pluginScheduler){

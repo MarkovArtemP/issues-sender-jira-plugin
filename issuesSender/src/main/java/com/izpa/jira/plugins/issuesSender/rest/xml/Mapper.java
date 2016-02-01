@@ -8,6 +8,7 @@ public class Mapper {
     task.id = entity.getID();
     task.email = entity.getEmail();
     task.cron = entity.getCron();
+    //TODO добавить дату следующего и прошлого отправления
     return task;
   }
 }

@@ -3,6 +3,7 @@ package com.izpa.jira.plugins.issuesSender.dao.impl;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.sal.api.transaction.TransactionCallback;
+import com.cronutils.model.Cron;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
@@ -43,7 +44,13 @@ public class TaskDAOImpl implements TaskDAO {
       entity.setEmail(task.getEmail());
       entity.setCron(task.getCron());
       entity.setLastSend(null);
-      Date nextSend = ExecutionTime.forCron(parser.parse(task.getCron())).nextExecution(DateTime.now()).toDate();
+
+      DateTime now = DateTime.now();
+      Cron cron = parser.parse(task.getCron());
+      ExecutionTime executionTime = ExecutionTime.forCron(cron);
+      DateTime nSend = executionTime.nextExecution(now);
+      Date nextSend = nSend.toDate();
+
       emailSender.createSchedule(entity.getID(), nextSend);
       entity.setNextSend(nextSend);
       entity.save();

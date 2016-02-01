@@ -6,14 +6,12 @@ import com.izpa.jira.plugins.issuesSender.dao.DAOFactory;
 import com.izpa.jira.plugins.issuesSender.entity.TaskEntity;
 import com.izpa.jira.plugins.issuesSender.logic.Task;
 import com.izpa.jira.plugins.issuesSender.logic.impl.TaskImpl;
-import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
 
 public class EmailSenderImpl implements LifecycleAware, EmailSender {
   private final PluginScheduler pluginScheduler;
-  private final Logger logger = Logger.getLogger(EmailSenderImpl.class);
 
   public EmailSenderImpl(PluginScheduler pluginScheduler){
     this.pluginScheduler = pluginScheduler;

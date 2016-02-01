@@ -1,8 +1,5 @@
 package com.izpa.jira.plugins.issuesSender.rest;
 
-import com.cronutils.model.definition.CronDefinition;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.validator.CronValidator;
 import com.izpa.jira.plugins.issuesSender.dao.DAOFactory;
 import com.izpa.jira.plugins.issuesSender.entity.TaskEntity;
 import com.izpa.jira.plugins.issuesSender.logic.Task;
@@ -14,6 +11,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.ws.rs.*;
 import com.atlassian.jira.rest.v1.util.CacheControl;
+import org.quartz.CronExpression;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -23,18 +22,6 @@ import java.util.List;
 @Consumes ({ MediaType.APPLICATION_JSON })
 @Produces ({ MediaType.APPLICATION_JSON })
 public class issuesSenderREST {
-    private CronDefinition cronDefinition = CronDefinitionBuilder.defineCron()
-                    .withMinutes().and()
-                    .withHours().and()
-                    .withDayOfMonth()
-                    .supportsHash().supportsL().supportsW().and()
-                    .withMonth().and()
-                    .withDayOfWeek()
-                    .withIntMapping(7, 0)
-                    .supportsHash().supportsL().supportsW().and()
-                    .instance();
-    private CronValidator validator = new CronValidator(cronDefinition);
-
     @GET
     public Response getTasks() throws Exception {
         TaskEntity[] tasks = DAOFactory.getInstance().getTaskDAO().getTasks();
@@ -63,9 +50,12 @@ public class issuesSenderREST {
             return Response.status(403).type("text/plain")
                     .entity("Invalid email").build();
         }
-        if (!validator.isValid(xmlTask.cron)){
+        try {
+            CronExpression.isValidExpression(xmlTask.cron);
+        }
+        catch (Exception e){
             return Response.status(403).type("text/plain")
-                    .entity("Invalid cron-string").build();
+                    .entity("Invalid cron").build();
         }
         Task task = new TaskImpl(xmlTask.email, xmlTask.cron);
         TaskEntity taskEntity = DAOFactory.getInstance().getTaskDAO().addTask(task);

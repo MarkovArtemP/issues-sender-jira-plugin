@@ -10,7 +10,7 @@ window.onload = function() {
     var CronInputCreateView = AJS.RestfulTable.CustomCreateView.extend({
         render: function (self) {
             console.log(self);
-            var $select = $('<input type="text" name="cron" required pattern="(\\*|([1-5]?\\d(-[1-5]?\\d)?(,[1-5]?\\d(-[1-5]?\\d)?)*)) (\\*|(((1?\\d)|(2[0-3]))(-((1?\\d)|(2[0-3])))?(,((1?\\d)|(2[0-3]))(-((1?\\d)|(2[0-3])))?)*)) (\\*|((([12]?\\d)|(3[01]))(-(([12]?\\d)|(3[01])))?(,(([12]?\\d)|(3[01]))(-(([12]?\\d)|(3[01])))?)*)) (\\*|((([1-9])|(1[0-2]))(-(([1-9])|(1[0-2])))?(,(([1-9])|(1[0-2]))(-(([1-9])|(1[0-2])))?)*)) (\\*|([0-7](-[0-7])?(,[0-7](-[0-7])?)*)) ?"/>');
+            var $select = $('<input type="text" name="cron" required/>');
             return $select;
         }
     });

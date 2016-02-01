@@ -33,10 +33,10 @@ public class issuesSenderREST {
                     .withIntMapping(7, 0)
                     .supportsHash().supportsL().supportsW().and()
                     .instance();
-    private CronValidator quartzValidator = new CronValidator(cronDefinition);
+    private CronValidator validator = new CronValidator(cronDefinition);
 
     @GET
-    public Response getTsaks() throws Exception {
+    public Response getTasks() throws Exception {
         TaskEntity[] tasks = DAOFactory.getInstance().getTaskDAO().getTasks();
         List<XmlTask> result = new ArrayList<XmlTask>();
         for (TaskEntity i : tasks){
@@ -63,7 +63,7 @@ public class issuesSenderREST {
             return Response.status(403).type("text/plain")
                     .entity("Invalid email").build();
         }
-        if (!quartzValidator.isValid(xmlTask.cron)){
+        if (!validator.isValid(xmlTask.cron)){
             return Response.status(403).type("text/plain")
                     .entity("Invalid cron-string").build();
         }
@@ -79,7 +79,7 @@ public class issuesSenderREST {
         TaskEntity taskEntity = DAOFactory.getInstance().getTaskDAO().deleteTask(id);
         return Response.ok(Mapper.toXmlTask(taskEntity)).cacheControl(CacheControl.NO_CACHE).build();
     }
-
+/*
     @PUT
     @Path("{id}")
     public Response updateTask(@PathParam("id") final String idStr, final XmlTask xmlTask) throws Exception {
@@ -99,4 +99,5 @@ public class issuesSenderREST {
         TaskEntity taskEntity = DAOFactory.getInstance().getTaskDAO().updateTask(id, task);
         return Response.ok(Mapper.toXmlTask(taskEntity)).cacheControl(CacheControl.NO_CACHE).build();
     }
+    */
 }

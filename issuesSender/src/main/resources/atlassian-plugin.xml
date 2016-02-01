@@ -23,17 +23,27 @@
   <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager"/>
   <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider"/>
   <component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer"/>
+  <component-import key="pluginScheduler">
+    <description>SAL Scheduler</description>
+    <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
+  </component-import>
+  <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
+    <description>Component to access Active Objects functionality from the plugin</description>
+  </component-import>
   <servlet key="admin-servlet" class="com.izpa.jira.plugins.issuesSender.adminUI.AdminServlet">
     <url-pattern>/issues-sender/admin</url-pattern>
   </servlet>
   <rest name="issues Sender REST" i18n-name-key="issues-sender-rest.name" key="issues-sender-rest" path="/issues-sender-rest" version="1.0">
     <description key="issues-sender-rest.description">The issues Sender REST Plugin</description>
   </rest>
-  <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
-    <description>Component to access Active Objects functionality from the plugin</description>
-  </component-import>
   <ao key="ao-module">
     <entity>com.izpa.jira.plugins.issuesSender.entity.TaskEntity</entity>
   </ao>
   <component key="dao-factory" class="com.izpa.jira.plugins.issuesSender.dao.DAOFactory"></component>
+  <component key="schedulerComponent" class="com.izpa.jira.plugins.issuesSender.task.EmailSenderImpl"
+             system="true" public="true">
+    <description>The plugin component that schedules the Twitter search.</description>
+    <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
+    <interface>com.izpa.jira.plugins.issuesSender.task.EmailSender</interface>
+  </component>
 </atlassian-plugin>

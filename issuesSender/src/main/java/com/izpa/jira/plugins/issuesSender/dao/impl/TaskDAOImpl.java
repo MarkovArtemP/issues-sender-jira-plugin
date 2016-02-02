@@ -2,16 +2,25 @@ package com.izpa.jira.plugins.issuesSender.dao.impl;
 
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.project.Project;
+import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.izpa.jira.plugins.issuesSender.task.EmailSender;
 import net.java.ao.Query;
 import com.izpa.jira.plugins.issuesSender.dao.TaskDAO;
 import com.izpa.jira.plugins.issuesSender.entity.TaskEntity;
 import com.izpa.jira.plugins.issuesSender.logic.Task;
+import org.ofbiz.core.entity.GenericEntityException;
 import org.quartz.CronExpression;
+import com.atlassian.jira.ComponentManager;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class TaskDAOImpl implements TaskDAO {
   private final ActiveObjects ao;
@@ -69,9 +78,36 @@ public TaskEntity sendMail(final long id) throws Exception {
     public TaskEntity doInTransaction() {
       TaskEntity entity = ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
       String email = entity.getEmail();
+
+      //TODO доделать получение issues
+      ProjectManager projectManager = ComponentManager.getInstance().getProjectManager();
+      List<Project> projects = projectManager.getProjectObjects();
+      IssueManager issueManager = ComponentManager.getInstance().getIssueManager();
+      List<Issue> issues = new ArrayList<Issue>();
+      for (Project project:projects){
+        long projectID = project.getId();
+        try {
+          Collection<Long> ids = issueManager.getIssueIdsForProject(projectID);
+          for(Issue issue:issueManager.getIssueObjects(ids)){
+            System.out.println("-----------------------------------------------");
+            System.out.println("ID: "+issue.getId());
+            System.out.println("STATUS: "+issue.getStatus().getStatusCategory().getName());
+            System.out.println("Project ID: "+issue.getProjectId());
+            System.out.println("Summary: "+issue.getSummary());
+            System.out.println("Assignee user: "+issue.getAssigneeUser().getDisplayName());
+            System.out.println("Reporter user: "+issue.getReporterUser().getDisplayName());
+            System.out.println("Description: "+issue.getDescription());
+            System.out.println("Environment: "+issue.getEnvironment());
+
+            System.out.println("-----------------------------------------------");
+
+          }
+        } catch (GenericEntityException e) {
+          e.printStackTrace();
+        }
+      }
+
       //TODO послать email
-      //TODO delete this
-      System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++Send email to"+email);
 
       entity.setLastSend(new Date());
 

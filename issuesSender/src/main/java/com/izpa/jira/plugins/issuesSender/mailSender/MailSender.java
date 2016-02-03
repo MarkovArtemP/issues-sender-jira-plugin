@@ -36,7 +36,6 @@ public class MailSender {
     em.setSubject("Issues in progress from "+ dt.format(now));
     em.setBody(dt.format(now));
 
-    em.setEncoding("text/plain");
     Multipart multipart = new MimeMultipart();
     BodyPart messageBodyPart= new MimeBodyPart();
     DataSource source = new FileDataSource(file);
@@ -45,7 +44,7 @@ public class MailSender {
     multipart.addBodyPart(messageBodyPart);
     em.setMultipart(multipart);
 
-    em.setEncoding("text/plain");
+    em.setMimeType("text/plain");
 
     SingleMailQueueItem smqi = new SingleMailQueueItem(em);
     ComponentAccessor.getMailQueue().addItem(smqi);

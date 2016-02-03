@@ -2,8 +2,12 @@ package com.izpa.jira.plugins.issuesSender.dao.impl;
 
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.mail.Email;
+import com.atlassian.mail.queue.SingleMailQueueItem;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.izpa.jira.plugins.issuesSender.issues.IssuesCSVGetter;
+import com.izpa.jira.plugins.issuesSender.mailSender.MailSender;
 import com.izpa.jira.plugins.issuesSender.schedule.Scheduler;
 import net.java.ao.Query;
 import com.izpa.jira.plugins.issuesSender.dao.TaskDAO;
@@ -69,14 +73,12 @@ public TaskEntity sendMail(final long id) throws Exception {
   return ao.executeInTransaction(new TransactionCallback<TaskEntity>() {
     public TaskEntity doInTransaction() {
       TaskEntity entity = ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
-      String email = entity.getEmail();
+      //TODO обработка отсутствия задач
       try {
-        IssuesCSVGetter.getInstance().getIssues();
+        MailSender.getInstance().sendIssues(entity.getEmail(),IssuesCSVGetter.getInstance().getIssues());
       } catch (Exception e) {
         e.printStackTrace();
       }
-      //TODO послать email
-
 
       scheduler.deleteSchedule(id);
 

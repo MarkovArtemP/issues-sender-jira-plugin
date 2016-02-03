@@ -21,7 +21,6 @@ import java.util.List;
 @Path("tasks")
 @Consumes ({ MediaType.APPLICATION_JSON })
 @Produces ({ MediaType.APPLICATION_JSON })
-//TODO добавить логирование
 public class issuesSenderREST {
   @GET
   public Response getTasks() throws Exception {

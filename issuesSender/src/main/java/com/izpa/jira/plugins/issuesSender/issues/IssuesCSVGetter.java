@@ -7,16 +7,19 @@ import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import org.ofbiz.core.entity.GenericEntityException;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class IssuesCSVGetter {
-  private List<String> issuesCSV;
+  private List<String> issues;
   private static IssuesCSVGetter instance = null;
 
   private IssuesCSVGetter(){
-    issuesCSV = new ArrayList<String>();
+    issues = new ArrayList<String>();
   }
 
   public static synchronized IssuesCSVGetter getInstance()throws Exception{
@@ -26,14 +29,21 @@ public class IssuesCSVGetter {
     return instance;
   }
 
-  public List getIssues(){
+  public File getIssues() throws IOException {
     refreshIssues();
+    File issuesCSV = new File("issues.csv");
+    FileWriter writer = new FileWriter(issuesCSV);
+    for (String i : issues){
+      writer.append(i+'\n');
+    }
+    writer.flush();
+    writer.close();
     return issuesCSV;
   }
 
   private void refreshIssues(){
-    issuesCSV.clear();
-    issuesCSV.add("Summary,Project,Assignee user,Reporter user,Description,Due date,Created,Priority");
+    issues.clear();
+    issues.add("Summary, Project, Assignee, Reporter, Description, Due date, Created, Priority");
     ProjectManager projectManager = ComponentManager.getInstance().getComponentInstanceOfType(ProjectManager.class);
     List<Project> projects = projectManager.getProjectObjects();
     IssueManager issueManager = ComponentManager.getInstance().getComponentInstanceOfType(IssueManager.class);
@@ -44,36 +54,37 @@ public class IssuesCSVGetter {
         for(Issue issue:issueManager.getIssueObjects(ids)){
           if(issue.getStatus().getStatusCategory().getName()=="In Progress") {
             StringBuilder row = new StringBuilder();
-            row.append(issue.getSummary()+",");
-            row.append(project.getName()+",");
+            row.append(issue.getSummary()+", ");
+            row.append(project.getName()+", ");
             try {
-              row.append(issue.getAssigneeUser().getDisplayName()+",");
+              row.append(issue.getAssigneeUser().getDisplayName()+", ");
             } catch (Exception e) {
-              row.append(",");
+              row.append(", ");
             }
             try {
-              row.append(issue.getReporterUser().getDisplayName());
+              row.append(issue.getReporterUser().getDisplayName()+", ");
             } catch (Exception e) {
-              row.append(",");
+              row.append(", ");
             }
             try {
-              row.append(issue.getDescription());
+              row.append(issue.getDescription()+", ");
             } catch (Exception e) {
-              row.append(",");
+              row.append(", ");
             }
             try {
-              row.append(issue.getDueDate().toString());
+              row.append(issue.getDueDate().toString()+", ");
             } catch (Exception e) {
-              row.append(",");
+              row.append(", ");
             }
-            row.append(issue.getCreated().toString());
+            row.append(issue.getCreated().toString()+", ");
             row.append(issue.getPriority().getName());
-            issuesCSV.add(row.toString());
+            issues.add(row.toString());
           }
         }
       } catch (GenericEntityException e) {
         e.printStackTrace();
       }
     }
+
   }
 }

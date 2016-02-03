@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SchedulerImpl implements LifecycleAware, Scheduler {
-  //TODO добавить логирование
   private final PluginScheduler pluginScheduler;
 
   public SchedulerImpl(PluginScheduler pluginScheduler){

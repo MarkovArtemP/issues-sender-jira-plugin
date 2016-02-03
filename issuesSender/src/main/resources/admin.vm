@@ -5,6 +5,7 @@
     $webResourceManager.requireResourcesForContext("issuesSender")
   </head>
   <body>
+    <a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger">How to create correct cron-string</a>
     <table id="issues-tasks-table" class="aui"></table>
    </body>
 </html>

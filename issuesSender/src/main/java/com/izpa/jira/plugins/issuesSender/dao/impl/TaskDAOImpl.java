@@ -80,27 +80,93 @@ public TaskEntity sendMail(final long id) throws Exception {
       String email = entity.getEmail();
 
       //TODO доделать получение issues
-      ProjectManager projectManager = ComponentManager.getInstance().getProjectManager();
+      ProjectManager projectManager = ComponentManager.getInstance().getComponentInstanceOfType(ProjectManager.class);
       List<Project> projects = projectManager.getProjectObjects();
-      IssueManager issueManager = ComponentManager.getInstance().getIssueManager();
+      IssueManager issueManager = ComponentManager.getInstance().getComponentInstanceOfType(IssueManager.class);
       List<Issue> issues = new ArrayList<Issue>();
       for (Project project:projects){
         long projectID = project.getId();
         try {
           Collection<Long> ids = issueManager.getIssueIdsForProject(projectID);
           for(Issue issue:issueManager.getIssueObjects(ids)){
-            System.out.println("-----------------------------------------------");
-            System.out.println("ID: "+issue.getId());
-            System.out.println("STATUS: "+issue.getStatus().getStatusCategory().getName());
-            System.out.println("Project ID: "+issue.getProjectId());
-            System.out.println("Summary: "+issue.getSummary());
-            System.out.println("Assignee user: "+issue.getAssigneeUser().getDisplayName());
-            System.out.println("Reporter user: "+issue.getReporterUser().getDisplayName());
-            System.out.println("Description: "+issue.getDescription());
-            System.out.println("Environment: "+issue.getEnvironment());
+            if(issue.getStatus().getStatusCategory().getName()=="In Progress") {
+              System.out.println("-----------------------------------------------");
 
-            System.out.println("-----------------------------------------------");
-
+              try {
+                System.out.println("ID: " + issue.getId());
+              } catch (Exception e) {
+                System.out.println("ID: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Project ID: " + issue.getProjectId());
+              } catch (Exception e) {
+                System.out.println("Project ID: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              //TODO add project name
+              try {
+                System.out.println("Project name: " + project.getName());
+              } catch (Exception e) {
+                System.out.println("Project name: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Summary: " + issue.getSummary());
+              } catch (Exception e) {
+                System.out.println("Summary: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Assignee user: " + issue.getAssigneeUser().getDisplayName());
+              } catch (Exception e) {
+                System.out.println("Assignee user: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Reporter user: " + issue.getReporterUser().getDisplayName());
+              } catch (Exception e) {
+                System.out.println("Reporter user: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Description: " + issue.getDescription());
+              } catch (Exception e) {
+                System.out.println("Description: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Due date: " + issue.getDueDate().toString());
+              } catch (Exception e) {
+                System.out.println("Due date: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Issue type id: " + issue.getIssueType().getName());
+              } catch (Exception e) {
+                System.out.println("Issue type id: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Key: " + issue.getKey());
+              } catch (Exception e) {
+                System.out.println("Key: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Created: " + issue.getCreated().toString());
+              } catch (Exception e) {
+                System.out.println("Created: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              try {
+                System.out.println("Priority: " + issue.getPriority().getName());
+              } catch (Exception e) {
+                System.out.println("Priority: EXCEPTION!");
+                //e.printStackTrace();
+              }
+              System.out.println("-----------------------------------------------");
+            }
           }
         } catch (GenericEntityException e) {
           e.printStackTrace();

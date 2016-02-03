@@ -16,7 +16,6 @@
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <dependency>com.atlassian.auiplugin:aui-experimental-restfultable</dependency>
     <resource type="download" name="admin.js" location="/js/admin.js"/>
-    <resource type="download" name="crontab.js" location="/js/crontab.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>issuesSender</context>
   </web-resource>
@@ -39,11 +38,10 @@
   <ao key="ao-module">
     <entity>com.izpa.jira.plugins.issuesSender.entity.TaskEntity</entity>
   </ao>
-  <component key="dao-factory" class="com.izpa.jira.plugins.issuesSender.dao.DAOFactory"></component>
-  <component key="schedulerComponent" class="com.izpa.jira.plugins.issuesSender.task.EmailSenderImpl"
-             system="true" public="true">
+  <component key="dao-factory" class="com.izpa.jira.plugins.issuesSender.dao.DAOFactory"/>
+  <component key="schedulerComponent" class="com.izpa.jira.plugins.issuesSender.schedule.impl.SchedulerImpl" system="true" public="true">
     <description>The plugin component that schedules the Twitter search.</description>
     <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
-    <interface>com.izpa.jira.plugins.issuesSender.task.EmailSender</interface>
+    <interface>com.izpa.jira.plugins.issuesSender.schedule.Scheduler</interface>
   </component>
 </atlassian-plugin>

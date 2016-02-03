@@ -1,4 +1,4 @@
-package com.izpa.jira.plugins.issuesSender.task;
+package com.izpa.jira.plugins.issuesSender.schedule.task;
 
 import com.atlassian.sal.api.scheduling.PluginJob;
 import com.izpa.jira.plugins.issuesSender.dao.DAOFactory;

@@ -1,4 +1,4 @@
-package com.izpa.jira.plugins.issuesSender.task;
+package com.izpa.jira.plugins.issuesSender.schedule.impl;
 
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
 import com.atlassian.sal.api.scheduling.PluginScheduler;
@@ -6,15 +6,17 @@ import com.izpa.jira.plugins.issuesSender.dao.DAOFactory;
 import com.izpa.jira.plugins.issuesSender.entity.TaskEntity;
 import com.izpa.jira.plugins.issuesSender.logic.Task;
 import com.izpa.jira.plugins.issuesSender.logic.impl.TaskImpl;
+import com.izpa.jira.plugins.issuesSender.schedule.Scheduler;
+import com.izpa.jira.plugins.issuesSender.schedule.task.SendEmail;
 
 import java.util.Date;
 import java.util.HashMap;
 
-public class EmailSenderImpl implements LifecycleAware, EmailSender {
+public class SchedulerImpl implements LifecycleAware, Scheduler {
   //TODO добавить логирование
   private final PluginScheduler pluginScheduler;
 
-  public EmailSenderImpl(PluginScheduler pluginScheduler){
+  public SchedulerImpl(PluginScheduler pluginScheduler){
     this.pluginScheduler = pluginScheduler;
   }
 

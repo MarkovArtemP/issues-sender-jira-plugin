@@ -12,5 +12,9 @@ public class XmlTask {
   public String email;
   @XmlElement
   public String cron;
-  //TODO добавить дату следующего и прошлого отправления
+  @XmlElement
+  public String nextSend;
+  @XmlElement
+  public String lastSend;
+  //TODO добавить дату последнего пропущенного отправления
 }

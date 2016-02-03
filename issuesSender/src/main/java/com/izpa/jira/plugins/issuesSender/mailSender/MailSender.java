@@ -21,7 +21,7 @@ import java.util.Locale;
 
 public class MailSender {
   private static MailSender instance = null;
-  private SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss", Locale.ENGLISH);
+  private SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
   public static synchronized MailSender getInstance()throws Exception{
     if (instance == null) {
       instance = new MailSender();

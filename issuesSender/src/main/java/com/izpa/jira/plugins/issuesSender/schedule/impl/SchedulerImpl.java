@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SchedulerImpl implements LifecycleAware, Scheduler {
-  private final PluginScheduler pluginScheduler;
+private final PluginScheduler pluginScheduler;
 
   public SchedulerImpl(PluginScheduler pluginScheduler){
     this.pluginScheduler = pluginScheduler;
@@ -39,6 +39,7 @@ public class SchedulerImpl implements LifecycleAware, Scheduler {
     try {
       taskEntities = DAOFactory.getInstance().getTaskDAO().getTasks();
       for(TaskEntity entity : taskEntities){
+        //TODO вернуть метод обновления в дао и делать всё это через обновление, добовляя дату пропущенного отправления
         Task task = new TaskImpl(entity.getEmail(), entity.getCron());
         DAOFactory.getInstance().getTaskDAO().deleteTask(entity.getID());
         DAOFactory.getInstance().getTaskDAO().addTask(task);

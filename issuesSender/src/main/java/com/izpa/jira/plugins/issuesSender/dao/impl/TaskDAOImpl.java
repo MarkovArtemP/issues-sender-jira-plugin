@@ -79,7 +79,7 @@ public TaskEntity sendMail(final long id) throws Exception {
       } catch (Exception e) {
         e.printStackTrace();
       }
-
+      entity.setLastSend(new Date());
       scheduler.deleteSchedule(id);
 
       try {

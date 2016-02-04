@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<someservice id="isssuessenderserviceid">
+  <description>This service collect all issues with status "In Progress" and send them to email-address</description>
+  <properties>
+    <property>
+      <key>Email</key>
+      <name>Email address</name>
+      <type>string</type>
+    </property>
+  </properties>
+</someservice>

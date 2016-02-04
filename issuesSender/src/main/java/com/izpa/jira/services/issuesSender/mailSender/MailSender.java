@@ -1,4 +1,4 @@
-package com.izpa.jira.plugins.issuesSender.mailSender;
+package com.izpa.jira.services.issuesSender.mailSender;
 
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.mail.Email;

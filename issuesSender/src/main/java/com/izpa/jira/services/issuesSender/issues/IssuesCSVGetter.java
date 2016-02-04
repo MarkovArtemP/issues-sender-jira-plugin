@@ -1,4 +1,4 @@
-package com.izpa.jira.plugins.issuesSender.issues;
+package com.izpa.jira.services.issuesSender.issues;
 
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.issue.Issue;
@@ -85,6 +85,5 @@ public class IssuesCSVGetter {
         e.printStackTrace();
       }
     }
-
   }
 }

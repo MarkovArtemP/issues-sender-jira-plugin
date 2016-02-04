@@ -48,7 +48,5 @@ public class MailSender {
 
     SingleMailQueueItem smqi = new SingleMailQueueItem(em);
     ComponentAccessor.getMailQueue().addItem(smqi);
-
-    //MailFactory.getServerManager().getDefaultSMTPMailServer().send(em);
   }
 }

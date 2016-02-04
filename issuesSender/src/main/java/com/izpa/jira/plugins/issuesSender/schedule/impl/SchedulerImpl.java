@@ -38,11 +38,11 @@ private final PluginScheduler pluginScheduler;
     TaskEntity[] taskEntities;
     try {
       taskEntities = DAOFactory.getInstance().getTaskDAO().getTasks();
+      Date now = new Date();
       for(TaskEntity entity : taskEntities){
-        //TODO вернуть метод обновления в дао и делать всё это через обновление, добовляя дату пропущенного отправления
-        Task task = new TaskImpl(entity.getEmail(), entity.getCron());
-        DAOFactory.getInstance().getTaskDAO().deleteTask(entity.getID());
-        DAOFactory.getInstance().getTaskDAO().addTask(task);
+        if (entity.getNextSend().getTime()<now.getTime()) {
+          DAOFactory.getInstance().getTaskDAO().updateTask(entity.getID());
+        }
       }
     } catch (Exception e) {
       e.printStackTrace();

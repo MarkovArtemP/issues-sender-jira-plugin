@@ -13,4 +13,7 @@ public interface TaskEntity extends Task, Entity {
 
   public Date getNextSend();
   public void setNextSend(Date nextSend);
+
+  public Date getLastMissSend();
+  public void setLastMissSend(Date nextMissSend);
 }

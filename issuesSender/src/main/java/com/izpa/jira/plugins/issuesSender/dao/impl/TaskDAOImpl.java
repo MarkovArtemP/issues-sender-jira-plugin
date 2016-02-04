@@ -2,9 +2,6 @@ package com.izpa.jira.plugins.issuesSender.dao.impl;
 
 
 import com.atlassian.activeobjects.external.ActiveObjects;
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.mail.Email;
-import com.atlassian.mail.queue.SingleMailQueueItem;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.izpa.jira.plugins.issuesSender.issues.IssuesCSVGetter;
 import com.izpa.jira.plugins.issuesSender.mailSender.MailSender;
@@ -69,32 +66,58 @@ public class TaskDAOImpl implements TaskDAO {
     });
   }
 
-public TaskEntity sendMail(final long id) throws Exception {
-  return ao.executeInTransaction(new TransactionCallback<TaskEntity>() {
-    public TaskEntity doInTransaction() {
-      TaskEntity entity = ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
-      //TODO обработка отсутствия задач
-      try {
-        MailSender.getInstance().sendIssues(entity.getEmail(),IssuesCSVGetter.getInstance().getIssues());
-      } catch (Exception e) {
-        e.printStackTrace();
+  public TaskEntity updateTask(final long id){
+    return ao.executeInTransaction(new TransactionCallback<TaskEntity>() {
+      public TaskEntity doInTransaction() {
+        TaskEntity entity = ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
+        Date now = new Date();
+        if (entity.getNextSend().getTime()<now.getTime()) {
+          try {
+            CronExpression cron = new CronExpression(entity.getCron());
+            Date nextSend = cron.getNextValidTimeAfter(now);
+            scheduler.createSchedule(entity.getID(), nextSend);
+            entity.setNextSend(nextSend);
+            Date lastMissedSend = entity.getLastSend();
+            while (cron.getNextValidTimeAfter(lastMissedSend).getTime()<now.getTime()){
+              lastMissedSend = cron.getNextValidTimeAfter(lastMissedSend);
+            }
+            entity.setLastMissSend(lastMissedSend);
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+        }
+        entity.save();
+        return entity;
       }
-      entity.setLastSend(new Date());
-      scheduler.deleteSchedule(id);
+    });
+  }
 
-      try {
-        CronExpression cron = new CronExpression(entity.getCron());
-        Date nextSend = cron.getNextValidTimeAfter(new Date());
-        scheduler.createSchedule(entity.getID(), nextSend);
-        entity.setNextSend(nextSend);
-      } catch (ParseException e) {
-        e.printStackTrace();
+  public TaskEntity sendMail(final long id) throws Exception {
+    return ao.executeInTransaction(new TransactionCallback<TaskEntity>() {
+      public TaskEntity doInTransaction() {
+        TaskEntity entity = ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
+
+        try {
+          MailSender.getInstance().sendIssues(entity.getEmail(),IssuesCSVGetter.getInstance().getIssues());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        entity.setLastSend(new Date());
+        scheduler.deleteSchedule(id);
+
+        try {
+          CronExpression cron = new CronExpression(entity.getCron());
+          Date nextSend = cron.getNextValidTimeAfter(new Date());
+          scheduler.createSchedule(entity.getID(), nextSend);
+          entity.setNextSend(nextSend);
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+        entity.save();
+        return entity;
       }
-      entity.save();
-      return entity;
-    }
-  });
-}
+    });
+  }
   public TaskEntity getTask(long id) throws Exception{
     return ao.find(TaskEntity.class, Query.select().where("ID=?", id))[0];
   }

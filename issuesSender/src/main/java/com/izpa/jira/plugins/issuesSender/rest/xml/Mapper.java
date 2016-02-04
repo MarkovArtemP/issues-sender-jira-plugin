@@ -14,7 +14,7 @@ public class Mapper {
     task.cron = entity.getCron();
     task.lastSend=entity.getLastSend()==null?null:dt.format(entity.getLastSend());
     task.nextSend=entity.getNextSend()==null?null:dt.format(entity.getNextSend());
-    //TODO добавить дату пропущенного отправления
+    task.lastMissSend=entity.getLastMissSend()==null?null:dt.format(entity.getLastMissSend());
     return task;
   }
 }

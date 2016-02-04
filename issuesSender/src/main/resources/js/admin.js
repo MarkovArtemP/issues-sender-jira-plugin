@@ -63,7 +63,12 @@ window.onload = function() {
         header: "Next send",
         createView: DisabledInputCreateView,
         emptyText: "No date"
-      }
+      }{
+       id: "lastMissSend",
+       header: "Last missed send",
+       createView: DisabledInputCreateView,
+       emptyText: "No date"
+     }
     ]
   });
 };

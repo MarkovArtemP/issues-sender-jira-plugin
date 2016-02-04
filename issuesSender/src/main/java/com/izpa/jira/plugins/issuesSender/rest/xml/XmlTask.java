@@ -16,5 +16,6 @@ public class XmlTask {
   public String nextSend;
   @XmlElement
   public String lastSend;
-  //TODO добавить дату последнего пропущенного отправления
+  @XmlElement
+  public String lastMissSend;
 }

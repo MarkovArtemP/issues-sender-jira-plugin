@@ -9,4 +9,5 @@ public interface TaskDAO {
   public TaskEntity deleteTask(long id) throws Exception;
   public TaskEntity getTask(long id) throws Exception;
   public TaskEntity sendMail(long id) throws Exception;
+  public TaskEntity updateTask(long id) throws Exception;
 }
